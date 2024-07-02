@@ -1,7 +1,21 @@
-const http = require("http");
+const express = require("express")
 
-const router = require("./routes")
+const app = express()
 
-const server = http.createServer(router);
+app.use((req, res, next) => {
+    console.log("In the middleware.");
+    next() // Allow the request to go to the next middleware.
+})
 
-server.listen(3000);
+app.use((req, res, next) => {
+    console.log("In the another middleware.");
+    res.send("<h1>Hello From ExpressJs</h1>")
+})
+
+app.listen(3000, (error) => {
+    if (error) {
+        console.log("Some error occured.");
+    }else {
+        console.log("Server start listening at post 3000.");
+    }
+})
