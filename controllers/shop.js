@@ -20,6 +20,11 @@ exports.getIndex = (req, res, next) => {
   });
 };
 
+exports.getProduct = (req, res, next) => {
+  const productId = req.params.productId
+  console.log(productId);
+}
+
 exports.getCart = (req, res, next) => {
   res.render('shop/cart', {
     path: '/cart',
