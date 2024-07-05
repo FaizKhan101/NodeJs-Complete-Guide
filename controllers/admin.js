@@ -5,7 +5,7 @@ exports.getAddProduct = (req, res, next) => {
     pageTitle: "Add Product",
     path: "/admin/add-product",
     product: false,
-    editing: false
+    editing: false,
   });
 };
 
@@ -20,24 +20,28 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render("admin/products", {
-      prods: products,
-      pageTitle: "Admin Products",
-      path: "/admin/products",
+  Product.fetchAll()
+    .then((products) => {
+      res.render("admin/products", {
+        prods: products[0],
+        pageTitle: "Admin Products",
+        path: "/admin/products",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  });
 };
 
 exports.getEditProduct = (req, res, next) => {
-  const editMode = req.query.edit
+  const editMode = req.query.edit;
   const productId = req.params.productId;
   Product.findById(productId, (product) => {
     res.render("admin/edit-product", {
       pageTitle: "Add Product",
       path: "/admin/edit-product",
       product: product,
-      editing: editMode
+      editing: editMode,
     });
   });
 };

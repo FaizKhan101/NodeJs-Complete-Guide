@@ -2,23 +2,32 @@ const Cart = require("../models/cart");
 const Product = require("../models/product");
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render("shop/product-list", {
-      prods: products,
-      pageTitle: "All Products",
-      path: "/products",
+  Product.fetchAll()
+    .then((products) => {
+      console.log(products[0]);
+      res.render("shop/product-list", {
+        prods: products[0],
+        pageTitle: "All Products",
+        path: "/products",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  });
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render("shop/index", {
-      prods: products,
-      pageTitle: "Shop",
-      path: "/",
+  Product.fetchAll()
+    .then((products) => {
+      res.render("shop/index", {
+        prods: products[0],
+        pageTitle: "Shop",
+        path: "/",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  });
 };
 
 exports.getProduct = (req, res, next) => {
@@ -41,13 +50,13 @@ exports.getCart = (req, res, next) => {
           (prod) => prod.id === product.id
         );
         if (cartProductData) {
-          cartProducts.push({ productData: product, qty: cartProductData.qty});
+          cartProducts.push({ productData: product, qty: cartProductData.qty });
         }
       }
       res.render("shop/cart", {
         path: "/cart",
         pageTitle: "Your Cart",
-        products: cartProducts
+        products: cartProducts,
       });
     });
   });
@@ -62,14 +71,14 @@ exports.postCart = (req, res, next) => {
 };
 
 exports.cartDeleteProduct = (req, res, next) => {
-  const productId = req.body.productId
+  const productId = req.body.productId;
 
-  Product.findById(productId, product => {
-    Cart.deleteProduct(productId, product.price)
-  })
+  Product.findById(productId, (product) => {
+    Cart.deleteProduct(productId, product.price);
+  });
 
-  res.redirect("/")
-}
+  res.redirect("/");
+};
 
 exports.getOrders = (req, res, next) => {
   res.render("shop/orders", {
