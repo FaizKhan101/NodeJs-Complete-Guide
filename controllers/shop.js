@@ -32,13 +32,14 @@ exports.getIndex = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
   const productId = req.params.productId;
-  Product.findById(productId, (product) => {
+  Product.findById(productId).then(products => {
+    const product = products[0][0]
     res.render("shop/product-detail", {
       path: "/products",
       pageTitle: "Products",
       product: product,
     });
-  });
+  })
 };
 
 exports.getCart = (req, res, next) => {
