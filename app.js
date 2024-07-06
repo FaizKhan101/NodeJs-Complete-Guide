@@ -19,6 +19,15 @@ app.set("views", "views");
 app.use(express.static(path.join(rootDir, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use((req, res, next) => {
+  User.findByPk(1)
+    .then((user) => {
+      req.user = user;
+      next();
+    })
+    .catch((err) => console.log(err));
+});
+
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 
@@ -32,6 +41,16 @@ sequelize
   .sync()
   .then((result) => {
     // console.log(result);
+    return User.findByPk(1);
+  })
+  .then((user) => {
+    if (!user) {
+      return User.create({ name: "Faiz", email: "test@test.com" });
+    }
+    return user;
+  })
+  .then((user) => {
+    // console.log(user);
     app.listen(3000);
   })
   .catch((err) => {
