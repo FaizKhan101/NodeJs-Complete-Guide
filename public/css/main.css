@@ -191,10 +191,21 @@ form {
   cursor: pointer;
 }
 
+.danger {
+  color: red;
+  border-color: red;
+}
+
+
 .btn:hover,
 .btn:active {
   background-color: #00695c;
   color: white;
+}
+.danger:hover,
+.danger:active {
+  color: white;
+  background-color: red;
 }
 
 @media (min-width: 768px) {
