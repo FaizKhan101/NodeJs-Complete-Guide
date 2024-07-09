@@ -6,11 +6,10 @@ const bodyParser = require("body-parser");
 const errorController = require("./controllers/error");
 const rootDir = require("./util/path");
 
-const mongoConnect = require("./util/database")
+const db = require("./util/database");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
-
 
 const app = express();
 
@@ -34,7 +33,10 @@ app.use(shopRoutes);
 
 app.use(errorController.get404);
 
-mongoConnect(client => {
-  console.log(client);
-  app.listen(3000)
-})
+db.mongoConnect()
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((err) => {
+    err;
+  });
