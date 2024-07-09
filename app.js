@@ -35,8 +35,8 @@ app.use(errorController.get404);
 
 db.mongoConnect()
   .then((result) => {
-    console.log(result);
+    app.listen(3000)
   })
   .catch((err) => {
-    err;
+    console.log(err);
   });
