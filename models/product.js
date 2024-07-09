@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const db = require("../util/database")
 
 class Product {
@@ -10,6 +11,14 @@ class Product {
 
   save() {
     return db.getDb().collection("products").insertOne(this)
+  }
+
+  static findById(id) {
+    return db.getDb().collection("products").findOne({ _id: new ObjectId(id) })
+  }
+
+  static fetchAll() {
+    return db.getDb().collection("products").find().toArray()
   }
 }
 
