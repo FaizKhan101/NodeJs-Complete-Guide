@@ -2,15 +2,20 @@ const { ObjectId } = require("mongodb");
 const db = require("../util/database")
 
 class Product {
-  constructor(title, imageUrl, price, description) {
+  constructor(title, imageUrl, price, description, id) {
     this.title = title;
     this.imageUrl = imageUrl;
     this.price = price;
     this.description = description
+    this._id = id;
   }
 
   save() {
-    return db.getDb().collection("products").insertOne(this)
+    if (this._id) {
+      return db.getDb().collection("products").updateOne({_id: new ObjectId(this._id)}, {$set: this})
+    } else {
+      return db.getDb().collection("products").insertOne(this)
+    }
   }
 
   static findById(id) {
