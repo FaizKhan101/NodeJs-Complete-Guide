@@ -1,6 +1,5 @@
 const { ObjectId } = require("mongodb");
 const db = require("../util/database");
-const { QueryInterface } = require("sequelize");
 
 class User {
   constructor(name, email, cart, id) {
@@ -20,13 +19,16 @@ class User {
     });
 
     let newQuantity = 1;
-    const updateCartItems = [...this.cart.items]
+    const updateCartItems = [...this.cart.items];
 
     if (cartProductIndex >= 0) {
       newQuantity = this.cart.items[cartProductIndex].quantity + 1;
-      updateCartItems[cartProductIndex].quantity = newQuantity
+      updateCartItems[cartProductIndex].quantity = newQuantity;
     } else {
-      updateCartItems.push({ productId: new ObjectId(product._id), quantity: newQuantity })
+      updateCartItems.push({
+        productId: new ObjectId(product._id),
+        quantity: newQuantity,
+      });
     }
 
     const updatedCart = {
@@ -39,6 +41,26 @@ class User {
         { _id: new ObjectId(this._id) },
         { $set: { cart: updatedCart } }
       );
+  }
+  getCart() {
+    const productIds = this.cart.items.map((i) => {
+      return i.productId;
+    });
+    return db
+      .getDb()
+      .collection("products")
+      .find({ _id: { $in: productIds } })
+      .toArray()
+      .then((products) => {
+        return products.map((p) => {
+          return {
+            ...p,
+            quantity: this.cart.items.find((i) => {
+              return i.productId.toString() === p._id.toString();
+            }).quantity,
+          };
+        });
+      });
   }
 
   static findById(id) {

@@ -4,7 +4,8 @@ exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
-    editing: false
+    editing: false,
+    product: false
   });
 };
 
@@ -18,7 +19,6 @@ exports.postAddProduct = (req, res, next) => {
     price,
     description,
     imageUrl,
-    null,
     req.user._id
   );
   product
@@ -40,7 +40,6 @@ exports.getEditProduct = (req, res, next) => {
   }
   const prodId = req.params.productId;
   Product.findById(prodId)
-    // Product.findById(prodId)
     .then(product => {
       if (!product) {
         return res.redirect('/');
