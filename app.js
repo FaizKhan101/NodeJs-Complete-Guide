@@ -33,7 +33,7 @@ app.use(shopRoutes);
 app.use(errorController.get404);
 
 mongoose
-  .connect("mongodb://localhost:/27017/shop")
+  .connect("mongodb://localhost:27017/shop")
   .then((result) => {
     app.listen(3000, () => console.log("Server start at port: 3000"));
   })
