@@ -45,8 +45,9 @@ exports.getProduct = (req, res, next) => {
 
 exports.getCart = (req, res, next) => {
   req.user
-    .getCart()
-    .then((products) => {
+    .populate("cart.items.productId")
+    .then((user) => {
+      let products = user.cart.items;
       res.render("shop/cart", {
         path: "/cart",
         pageTitle: "Your Cart",
@@ -99,7 +100,7 @@ exports.postOrder = (req, res, next) => {
     });
 };
 
-exports.getOrders = (req, res, next) => { 
+exports.getOrders = (req, res, next) => {
   req.user
     .getOrders()
     .then((orders) => {
