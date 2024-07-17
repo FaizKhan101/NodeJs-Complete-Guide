@@ -2,10 +2,10 @@ const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product', {
-    isAuthenticated: req.isLoggedIn,
     pageTitle: 'Add Product',
     path: '/admin/add-product',
-    editing: false
+    editing: false,
+    isAuthenticated: req.session.isLoggedIn
   });
 };
 
@@ -45,11 +45,11 @@ exports.getEditProduct = (req, res, next) => {
         return res.redirect('/');
       }
       res.render('admin/edit-product', {
-        isAuthenticated: req.isLoggedIn,
         pageTitle: 'Edit Product',
         path: '/admin/edit-product',
         editing: editMode,
-        product: product
+        product: product,
+        isAuthenticated: req.session.isLoggedIn
       });
     })
     .catch(err => console.log(err));
@@ -84,10 +84,10 @@ exports.getProducts = (req, res, next) => {
     .then(products => {
       console.log(products);
       res.render('admin/products', {
-        isAuthenticated: req.isLoggedIn,
         prods: products,
         pageTitle: 'Admin Products',
-        path: '/admin/products'
+        path: '/admin/products',
+        isAuthenticated: req.session.isLoggedIn
       });
     })
     .catch(err => console.log(err));

@@ -6,10 +6,10 @@ exports.getProducts = (req, res, next) => {
     .then(products => {
       console.log(products);
       res.render('shop/product-list', {
-        isAuthenticated: req.isLoggedIn,
         prods: products,
         pageTitle: 'All Products',
-        path: '/products'
+        path: '/products',
+        isAuthenticated: req.session.isLoggedIn
       });
     })
     .catch(err => {
@@ -22,10 +22,10 @@ exports.getProduct = (req, res, next) => {
   Product.findById(prodId)
     .then(product => {
       res.render('shop/product-detail', {
-        isAuthenticated: req.isLoggedIn,
         product: product,
         pageTitle: product.title,
-        path: '/products'
+        path: '/products',
+        isAuthenticated: req.session.isLoggedIn
       });
     })
     .catch(err => console.log(err));
@@ -35,10 +35,10 @@ exports.getIndex = (req, res, next) => {
   Product.find()
     .then(products => {
       res.render('shop/index', {
-        isAuthenticated: req.isLoggedIn,
         prods: products,
         pageTitle: 'Shop',
-        path: '/'
+        path: '/',
+        isAuthenticated: req.session.isLoggedIn
       });
     })
     .catch(err => {
@@ -53,10 +53,10 @@ exports.getCart = (req, res, next) => {
     .then(user => {
       const products = user.cart.items;
       res.render('shop/cart', {
-        isAuthenticated: req.isLoggedIn,
         path: '/cart',
         pageTitle: 'Your Cart',
-        products: products
+        products: products,
+        isAuthenticated: req.session.isLoggedIn
       });
     })
     .catch(err => console.log(err));
@@ -114,10 +114,10 @@ exports.getOrders = (req, res, next) => {
   Order.find({ 'user.userId': req.user._id })
     .then(orders => {
       res.render('shop/orders', {
-        isAuthenticated: req.isLoggedIn,
         path: '/orders',
         pageTitle: 'Your Orders',
-        orders: orders
+        orders: orders,
+        isAuthenticated: req.session.isLoggedIn
       });
     })
     .catch(err => console.log(err));
