@@ -232,9 +232,29 @@ form {
   color: white;
 }
 
+.user-message {
+  margin: auto;
+  padding: 1rem;
+  width: 90%;
+  border: 1px solid #3b8af1;
+  border-radius: 4px;
+  background-color: #b5eafa;
+}
+
+.user-message--error {
+  border-color: red;
+  background-color: rgb(250, 150, 150);
+  color: rgb(206, 4, 4);
+  text-align: center;
+}
+
 @media (min-width: 768px) {
   .main-header__nav {
     display: flex;
+  }
+
+  .user-message{
+    width: 30rem;
   }
 
   #side-menu-toggle {
