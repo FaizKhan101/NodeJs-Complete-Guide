@@ -76,32 +76,23 @@ exports.postSignup = (req, res, next) => {
     });
   }
 
-  User.findOne({ email: email }).then((userDoc) => {
-    if (userDoc) {
-      req.flash("error", "Email address already exist!");
-      return res.redirect("/signup");
-    }
-    if (password !== confirmPassword) {
-      req.flash("error", "Password must be match!");
-      return res.redirect("/signup");
-    }
-    return bcrypt
-      .hash(password, 12)
-      .then((hashPassward) => {
-        const user = new User({
-          email: email,
-          password: hashPassward,
-          cart: { items: [] },
-        });
-        return user.save();
-      })
-      .then((result) => {
-        res.redirect("/login");
-      })
-      .catch((err) => {
-        console.log(err);
+  bcrypt
+    .hash(password, 12)
+    .then((hashPassward) => {
+      const user = new User({
+        email: email,
+        password: hashPassward,
+        cart: { items: [] },
       });
-  });
+      return user.save();
+    })
+    .then((result) => {
+      res.redirect("/login");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  P;
 };
 
 exports.postLogout = (req, res, next) => {
