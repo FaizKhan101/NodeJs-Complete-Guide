@@ -41,23 +41,10 @@ exports.postLogin = (req, res, next) => {
     });
   }
 
-  let user;
   User.findOne({ email: email })
     .then((userDoc) => {
-      if (!userDoc) {
-        req.flash("error", "Incorrect email or password!");
-        return res.redirect("/login");
-      }
-      user = userDoc;
-      return bcrypt.compare(password, userDoc.password);
-    })
-    .then((passwordMatch) => {
-      if (!passwordMatch) {
-        req.flash("error", "Incorrect email or password!");
-        return res.redirect("/login");
-      }
       req.session.isLoggedIn = true;
-      req.session.user = user;
+      req.session.user = userDoc;
       req.session.save((err) => {
         console.log(err);
         res.redirect("/");
@@ -124,7 +111,6 @@ exports.postSignup = (req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
-  P;
 };
 
 exports.postLogout = (req, res, next) => {

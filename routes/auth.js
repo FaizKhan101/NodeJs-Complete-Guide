@@ -15,6 +15,7 @@ router.post(
   "/signup",
   [
     check("email")
+    .normalizeEmail()
       .isEmail()
       .withMessage("Please enter a valid email.")
       .custom((value, { req }) => {
@@ -29,8 +30,9 @@ router.post(
       "Please enter a password with only number and text and at least 5 character long."
     )
       .isLength({ min: 5 })
+      .trim()
       .isAlphanumeric(),
-    body("confirmPassword").custom((value, { req }) => {
+    body("confirmPassword").trim().custom((value, { req }) => {
       if (value !== req.body.password) {
         throw new Error("Password have to match.");
       }
@@ -44,6 +46,7 @@ router.post(
   "/login",
   [
     body("email", "Incorrect Email or Password.")
+      .normalizeEmail()
       .isEmail()
       .custom((value, { req }) => {
         return User.findOne({ email: value }).then((userDoc) => {
@@ -52,7 +55,7 @@ router.post(
           }
         });
       }),
-    body("password").custom((value, { req }) => {
+    body("password").trim().custom((value, { req }) => {
       return User.findOne({ email: req.body.email })
         .then((userDoc) => {
           return bcrypt.compare(value, userDoc.password);
