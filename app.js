@@ -39,13 +39,12 @@ app.use(
   })
 );
 
-
 app.use((req, res, next) => {
   if (!req.session.user) {
     return next();
   }
   User.findById(req.session.user._id)
-    .then((user) => {
+  .then((user) => {
       if (!user) {
         return next()
       }
@@ -57,14 +56,15 @@ app.use((req, res, next) => {
     });
 });
 
-app.use(csrfProtection)
 app.use(flash())
+app.use(csrfProtection)
 
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
   res.locals.csrfToken = req.csrfToken();
   next();
 });
+
 
 app.use("/admin", adminRoutes);
 app.use(shopRoutes);
@@ -76,7 +76,10 @@ app.use(errorController.get404);
 
 app.use((error, req, res, next) => {
   console.log(error);
-  res.redirect("/500")
+  res.status(500).render("500", {
+    pageTitle: "Something went wrong.",
+    path: "/500",
+  });
 })
 
 mongoose
