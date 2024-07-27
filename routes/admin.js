@@ -19,7 +19,6 @@ router.post(
     body("title", "Title must be at least 5 character long.")
       .trim()
       .isLength({ min: 4 }),
-    body("imageUrl", "Image address should be in URL form.").trim().isURL(),
     body("price", "Price must be at least 5.").isFloat({ min: 5 }),
     body("description", "Decription must be at least 8 character long.")
       .trim()
