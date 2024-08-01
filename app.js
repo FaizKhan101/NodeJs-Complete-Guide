@@ -105,6 +105,7 @@ app.use((error, req, res, next) => {
   res.status(500).render("500", {
     pageTitle: "Something went wrong.",
     path: "/500",
+    isAuthenticated: res.locals.isAuthenticated
   });
 });
 
