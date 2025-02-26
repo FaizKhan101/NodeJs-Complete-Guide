@@ -33,7 +33,7 @@ form {
 
 .main-header {
   width: 100%;
-  height: 3.5rem;
+  height: 4.5rem;
   background-color: #00695c;
   padding: 0 1.5rem;
   display: flex;
@@ -266,6 +266,12 @@ form {
 .pagination a.active {
   background-color: #00695c;
   color: white;
+}
+
+a {
+  text-decoration: none;
+  /* color: inherit; */
+  font-style: italic;
 }
 
 @media (min-width: 768px) {

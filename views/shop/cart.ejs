@@ -10,9 +10,17 @@
                     <% products.forEach(p => { %>
                         <li class="cart__item">
                             <h1><%= p.productId.title %></h1>
-                            <h2>Quantity: <%= p.quantity %></h2>
+                            <form action="" method="post">
+                                <input type="hidden" value="<%= p.productId._id %>" name="productId">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <button type="submit" class="quantity" <% if (p.quantity === 1) { %> disabled <% } %> formaction="/sub">-</button>
+                                <input type="text" id="quantity" value="<%= p.quantity %>" name="qty">
+                                <button type="submit" class="quantity" <% if (p.quantity > 9) { %> disabled <% } %> formaction="/add">+</button>
+                            </form>
+                            <p class="item-total">$ <%= p.productId.price * p.quantity %></p>
                             <form action="/cart-delete-item" method="POST">
                                 <input type="hidden" value="<%= p.productId._id %>" name="productId">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                 <button class="btn danger" type="submit">Delete</button>
                             </form>
                         </li>

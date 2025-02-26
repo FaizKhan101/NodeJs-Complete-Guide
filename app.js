@@ -110,7 +110,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGODB_URI, { useUnifiedTopology: true })
   .then((result) => {
     User.findOne().then((user) => {
       if (!user) {
@@ -124,7 +124,8 @@ mongoose
         user.save();
       }
     });
-    app.listen(3000);
+    app.listen(3000, () => console.log('Server start at port: 3000')
+    );
   })
   .catch((err) => {
     console.log(err);

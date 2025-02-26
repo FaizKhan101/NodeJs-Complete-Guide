@@ -25,6 +25,14 @@
                 <label for="confirmPassword">Confirm Password</label>
                 <input  class="<%= validationErrors.find(e => e.path === 'password') ? 'invalid' : "" %>" type="password" name="confirmPassword" id="confirmPassword" value="<%= oldInputs.confirmPassword %>">
             </div>
+            <div class="form-control">
+                <label for="contact">Contact Number</label>
+                <input  class="<%= validationErrors.find(e => e.path === 'contact') ? 'invalid' : "" %>" type="number" name="contact" id="contact" value="<%= oldInputs.contact %>">
+            </div>
+            <div class="form-control">
+                <label for="address">Address</label>
+                <input  class="<%= validationErrors.find(e => e.path === 'address') ? 'invalid' : "" %>" type="text" name="address" id="address" value="<%= oldInputs.address %>">
+            </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button class="btn" type="submit">Signup</button>
         </form>

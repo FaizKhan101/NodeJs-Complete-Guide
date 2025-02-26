@@ -70,6 +70,8 @@ exports.getSignup = (req, res, next) => {
       email: "",
       password: "",
       confirmPassword: "",
+      contact: '',
+      address: ''
     },
     validationErrors: [],
   });
@@ -79,7 +81,10 @@ exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
+  const contact = req.body.contact;
+  const address = req.body.address;
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
     console.log(errors.array());
     return res.status(422).render("auth/signup", {
@@ -90,6 +95,8 @@ exports.postSignup = (req, res, next) => {
         email: email,
         password: password,
         confirmPassword: confirmPassword,
+        contact: contact,
+        address: address
       },
       validationErrors: errors.array(),
     });
@@ -101,6 +108,8 @@ exports.postSignup = (req, res, next) => {
       const user = new User({
         email: email,
         password: hashPassward,
+        contact: contact,
+        address: address,
         cart: { items: [] },
       });
       return user.save();

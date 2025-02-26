@@ -15,7 +15,7 @@ router.post(
   "/signup",
   [
     check("email")
-    .normalizeEmail()
+      .normalizeEmail()
       .isEmail()
       .withMessage("Please enter a valid email.")
       .custom((value, { req }) => {
@@ -38,6 +38,8 @@ router.post(
       }
       return true;
     }),
+    body('contact', "Please enter a valid number.").trim().isLength({ min: 10, max: 10 }).isNumeric(),
+    body('address', "Please enter a valid address.").trim().isLength({ min: 10 })
   ],
   authController.postSignup
 );

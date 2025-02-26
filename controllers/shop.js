@@ -9,7 +9,7 @@ const stripe = require("stripe")(
 const Product = require("../models/product");
 const Order = require("../models/order");
 
-const ITEM_PER_PAGE = 1;
+const ITEM_PER_PAGE = 8;
 
 exports.getProducts = (req, res, next) => {
   const page = +req.query.page || 1;
@@ -109,6 +109,34 @@ exports.getCart = (req, res, next) => {
     });
 };
 
+exports.increaseQty = (req, res, next) => {
+  const {productId} = req.body;
+  req.user
+    .increaseFromCart(productId)
+    .then((result) => {
+      res.redirect("/cart");
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+}
+
+exports.decreaseQty = (req, res, next) => {
+  const {productId} = req.body;  
+  req.user
+    .decreaseFromCart(productId)
+    .then((result) => {
+      res.redirect("/cart");
+    })
+    .catch((err) => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
+}
+
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
   Product.findById(prodId)
@@ -149,7 +177,7 @@ exports.getCheckout = (req, res, next) => {
         path: "/checkout",
         pageTitle: "Checkout",
         products: products,
-        totalSum: total,
+        totalSum: total.toFixed(2),
       });
     })
     .catch((err) => {
@@ -279,20 +307,6 @@ exports.getInvoice = (req, res, next) => {
       pdfDoc.fontSize(26).text("Total Price: $" + totalPrice);
 
       pdfDoc.end();
-      // fs.readFile(invoicePath, (err, data) => {
-      //   if (err) {
-      //     return next(err);
-      //   }
-      //   res.setHeader("Content-Type", "application/pdf");
-      //   res.setHeader(
-      //     "Content-Disposition",
-      //     'attechment; filename="' + invoiceName + '"'
-      //   );
-      //   res.send(data);
-      // })
-      // const file = fs.createReadStream(invoicePath);
-
-      // file.pipe(res);
     })
     .catch((err) => next(err));
 };
